@@ -1,203 +1,210 @@
-# Automated Email Responder Agent
+# CrewAI Gmail Automation
 
-![Email Responder Banner](https://raw.githubusercontent.com/1elango/Automated-Email-Responder-Agent/main/assets/banner.png)
+An intelligent email management system that leverages CrewAI and large language models to automate Gmail organization, responses, and cleanup.
 
-## Overview
+## ✨ Features
 
-The Automated Email Responder Agent is an AI-powered solution designed to automatically analyze, categorize, and generate appropriate responses to incoming emails. This tool helps individuals and businesses manage their email workload efficiently by providing intelligent response suggestions or handling routine communications autonomously.
-
-## Features
-
-- **Email Classification**: Automatically categorizes emails into predefined types (inquiries, support requests, feedback, etc.)
-- **Priority Detection**: Identifies urgent emails that require immediate attention
-- **Sentiment Analysis**: Analyzes the tone and sentiment of incoming emails
-- **Personalized Response Generation**: Creates contextually appropriate responses based on email content
-- **Template Integration**: Utilizes customizable response templates for consistency
-- **Learning Capability**: Improves response quality over time through feedback mechanisms
-- **Integration Support**: Connects seamlessly with popular email services (Gmail, Outlook, etc.)
-- **Dashboard Interface**: User-friendly web dashboard for monitoring and configuration
+- **📋 Email Categorization**: Automatically categorizes emails into specific types (newsletters, promotions, personal, etc.)
+- **🔔 Priority Assignment**: Assigns priority levels (HIGH, MEDIUM, LOW) based on content and sender with strict classification rules
+- **🏷️ Smart Organization**: Applies Gmail labels and stars based on categories and priorities
+- **💬 Automated Responses**: Generates draft responses for important emails that need replies
+- **📱 Slack Notifications**: Sends creative notifications for high-priority emails
+- **🧹 Intelligent Cleanup**: Safely deletes low-priority emails based on age and category
+- **🎬 YouTube Content Protection**: Special handling for YouTube-related emails
+- **🗑️ Trash Management**: Automatically empties trash to free up storage space
+- **🧵 Thread Awareness**: Recognizes and properly handles email threads
 
 ## System Architecture
 
+```mermaid
+flowchart TD
+    UI["User Interface"] --> Core["Core Application<br>(main.py, crew.py)"]
+    Core --> Agents["AI Agents<br>(Categorizer, Organizer,<br>Generator, Notifier, Cleaner)"]
+    Agents --> Tools["Tools<br>(Date, Slack, Gmail Tools)"]
+    Tools --> External["External Services<br>(Model, Slack, Gmail IMAP)"]
+
+    %% Define modern, high-contrast styles
+    classDef primary fill:#e3f2fd,stroke:#1976d2,stroke-width:2px,color:#0d47a1,font-weight:bold
+    classDef secondary fill:#b3e5fc,stroke:#0288d1,stroke-width:2px,color:#01579b
+    classDef tertiary fill:#81d4fa,stroke:#0277bd,stroke-width:1px,color:#01579b
+    classDef quaternary fill:#4fc3f7,stroke:#01579b,stroke-width:1px,color:#ffffff
+
+    %% Apply styles to nodes
+    class UI primary
+    class Core primary
+    class Agents secondary
+    class Tools tertiary
+    class External quaternary
+
+    %% Customize link styles for better visibility
+    linkStyle default stroke:#455a64,stroke-width:2px,stroke-dasharray:5,5
+
+    %% Add a subtle theme for GitHub rendering
+    %% Note: Themes are not always supported in GitHub, but this improves compatibility
+    %% Use a light background for better readability
 ```
-├── Email Input → Email Processor → Classification Module → Response Generator → User Review → Email Dispatch
-└── Feedback Loop → Model Retraining
-```
 
-## Tech Stack
-
-- **Backend**: Python, Flask API
-- **NLP Processing**: Transformers, spaCy
-- **Machine Learning**: PyTorch, scikit-learn
-- **Email Integration**: IMAP/SMTP libraries, Gmail API
-- **Frontend**: React.js with Material UI
-- **Database**: MongoDB for template storage and usage analytics
-- **Deployment**: Docker, Kubernetes support
-
-## Installation
-
-### Prerequisites
-
-- Python 3.8+
-- Node.js 14+
-- MongoDB
-- Email account credentials
-
-### Setup Instructions
-
-1. Clone the repository:
-   ```bash
-   git clone https://github.com/1elango/Automated-Email-Responder-Agent.git
-   cd Automated-Email-Responder-Agent
-   ```
-
-2. Set up Python environment:
-   ```bash
-   python -m venv venv
-   source venv/bin/activate  # On Windows: venv\Scripts\activate
-   pip install -r requirements.txt
-   ```
-
-3. Install frontend dependencies:
-   ```bash
-   cd frontend
-   npm install
-   cd ..
-   ```
-
-4. Configure environment variables:
-   ```bash
-   cp .env.example .env
-   # Edit .env with your settings (email credentials, MongoDB connection, etc.)
-   ```
-
-5. Initialize the database:
-   ```bash
-   python src/setup/init_db.py
-   ```
-
-6. Start the application:
-   ```bash
-   # Start backend
-   python src/app.py
-   
-   # In another terminal, start frontend
-   cd frontend
-   npm start
-   ```
-
-7. Access the dashboard at `http://localhost:3000`
-
-### Docker Deployment
+## 🚀 Installation
 
 ```bash
-docker-compose up -d
+# Clone the repository
+git clone https://github.com/1elango/Automated-Email-Responder-Agent.git
+cd Automated-Email-Responder-Agent
+
+# Create and activate a virtual environment
+python -m venv .venv
+.venv\Scripts\activate
+
+# Install dependencies
+crewai install
 ```
 
-## Usage Guide
+## ⚙️ Configuration
 
-### Configuration
+1. Create a `.env` file in the root directory with the following variables:
 
-1. Navigate to the Settings page in the dashboard
-2. Connect your email account(s)
-3. Set up response templates and customize categories
-4. Configure auto-response rules and thresholds
+```
+# Choose your LLM provider
 
-### Daily Workflow
+# Or Gemini
+# MODEL=gemini/gemini-2.0-flash
+# GEMINI_API_KEY=your_gemini_api_key
 
-1. The system checks for new emails at configured intervals
-2. Incoming emails are processed, classified, and prioritized
-3. For each email:
-   - High confidence responses are sent automatically (if enabled)
-   - Medium confidence responses are queued for review
-   - Low confidence emails are flagged for manual handling
-4. Review suggested responses in the dashboard queue
-5. Approve, modify, or reject response suggestions
+# Gmail credentials
+EMAIL_ADDRESS=your_email@gmail.com
+APP_PASSWORD=your_app_password
+
+# Optional: Slack notifications
+SLACK_WEBHOOK_URL=your_slack_webhook_url
+```
+
+<details>
+<summary><b>🔑 How to create a Gmail App Password</b></summary>
+
+1. Go to your Google Account settings at [myaccount.google.com](https://myaccount.google.com/)
+2. Select **Security** from the left navigation panel
+3. Under "Signing in to Google," find and select **2-Step Verification** (enable it if not already enabled)
+4. Scroll to the bottom and find **App passwords**
+5. Select **Mail** from the "Select app" dropdown
+6. Select **Other (Custom name)** from the "Select device" dropdown
+7. Enter `Gmail CrewAI` as the name
+8. Click **Generate**
+9. Copy the 16-character password that appears (spaces will be removed automatically)
+10. Paste this password in your `.env` file as the `APP_PASSWORD` value
+11. Click **Done**
+
+**Note**: App passwords can only be created if you have 2-Step Verification enabled on your Google account.
+</details>
+
+<details>
+<summary><b>🔗 How to create a Slack Webhook URL</b></summary>
+
+1. Go to [api.slack.com/apps](https://api.slack.com/apps)
+2. Click **Create New App**
+3. Select **From scratch**
+4. Enter `Gmail Notifications` as the app name
+5. Select your workspace and click **Create App**
+6. In the left sidebar, find and click on **Incoming Webhooks**
+7. Toggle the switch to **Activate Incoming Webhooks**
+8. Click **Add New Webhook to Workspace**
+9. Select the channel where you want to receive notifications
+10. Click **Allow**
+11. Find the **Webhook URL** section and copy the URL that begins with `https://hooks.slack.com/services/`
+12. Paste this URL in your `.env` file as the `SLACK_WEBHOOK_URL` value
+
+**Customizing your Slack app (optional):**
+1. Go to **Basic Information** in the left sidebar
+2. Scroll down to **Display Information**
+3. Add an app icon and description
+4. Click **Save Changes**
+
+**Note**: You need admin permissions or the ability to install apps in your Slack workspace.
+</details>
 
 ## Project Structure
 
 ```
-/
-├── src/                    # Source code
-│   ├── api/                # API endpoints
-│   ├── classifiers/        # Email classification models
-│   ├── email_processor/    # Email fetching and parsing
-│   ├── response_generator/ # Response generation logic
-│   ├── models/             # ML model definitions
-│   ├── utils/              # Utility functions
-│   └── app.py              # Main application entry point
-├── models/                 # Trained model files
-├── data/                   # Training and test datasets
-│   ├── raw/                # Raw training data
-│   └── processed/          # Processed datasets
-├── frontend/               # React frontend application
-├── tests/                  # Test suite
-├── docs/                   # Documentation
-├── docker/                 # Docker configuration
-├── scripts/                # Utility scripts
-└── configs/                # Configuration files
+Automated-Email-Responder-Agent/
+├── src/
+│   ├── main.py
+│   ├── gmail_utils.py
+├── models/
+├── utils/
+├── data/
+├── README.md
+├── .env
+├── .venv/
+│   ├── Scripts
+│   ├── include
+│   ├── Lib
+├── requirements.txt
+```
+## 📧 How It Works
+
+This application uses the IMAP (Internet Message Access Protocol) to securely connect to your Gmail account and manage your emails. Here's how it works:
+
+<details>
+<summary><b>🔄 IMAP Connection Process</b></summary>
+
+1. **Secure Connection**: The application establishes a secure SSL connection to Gmail's IMAP server (`imap.gmail.com`).
+
+2. **Authentication**: It authenticates using your email address and app password (not your regular Google password).
+
+3. **Mailbox Access**: Once authenticated, it can access your inbox and other mailboxes to:
+   - Read unread emails
+   - Apply labels
+   - Move emails to trash
+   - Save draft responses
+
+4. **Safe Disconnection**: After each operation, the connection is properly closed to maintain security.
+
+IMAP allows the application to work with your emails while they remain on Google's servers, unlike POP3 which would download them to your device. This means you can still access all emails through the regular Gmail interface.
+
+**Security Note**: Your credentials are only stored locally in your `.env` file and are never shared with any external services.
+</details>
+
+## 🔍 Usage
+
+Run the application with:
+
+```bash
+crewai run
 ```
 
-## API Reference
+You'll be prompted to enter the number of emails to process (default is 5).
 
-The system exposes a RESTful API for integration:
+The application will:
+1. 📥 Fetch your unread emails
+2. 🔎 Categorize them by type and priority
+3. ⭐ Apply appropriate labels and stars
+4. ✏️ Generate draft responses for important emails
+5. 🔔 Send Slack notifications for high-priority items
+6. 🗑️ Clean up low-priority emails based on age
+7. 🧹 Empty the trash to free up storage space
 
-| Endpoint | Method | Description |
-|----------|--------|-------------|
-| `/api/emails` | GET | Retrieve processed emails |
-| `/api/emails/:id` | GET | Get specific email details |
-| `/api/responses/:id` | GET | Get generated response |
-| `/api/responses/:id` | PUT | Update/approve response |
-| `/api/settings` | GET/PUT | Manage system settings |
-| `/api/templates` | GET/POST | Manage response templates |
-| `/api/stats` | GET | Get usage statistics |
+## 🌟 Special Features
 
-## Performance Metrics
+- **📅 Smart Deletion Rules**: 
+  - Promotions older than 2 days are automatically deleted
+  - Newsletters older than 7 days (unless HIGH priority) are deleted
+  - Shutterfly emails are always deleted regardless of age
+  - Receipts and important documents are archived instead of deleted
 
-- **Classification Accuracy**: 92% across all email categories
-- **Response Appropriateness**: 89% acceptance rate of suggested responses
-- **Processing Speed**: Average 3-5 seconds per email
-- **Scalability**: Tested with up to 500 emails per hour
+- **🎬 YouTube Protection**: All YouTube-related emails are preserved and marked as READ_ONLY (you'll respond directly on YouTube)
 
-## Contributing
+- **✍️ Smart Response Generation**: Responses are tailored to the email context and include proper formatting
 
-Contributions are welcome! Please follow these steps:
+- **💡 Creative Slack Notifications**: Fun, attention-grabbing notifications for important emails
 
-1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add some amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
-
-See [CONTRIBUTING.md](CONTRIBUTING.md) for detailed guidelines.
-
-## Roadmap
-
-- [ ] Multi-language support
-- [ ] Advanced attachment handling
-- [ ] Mobile application
-- [ ] Calendar integration for scheduling responses
-- [ ] Voice command interface
-- [ ] Custom ML model training interface
-
-## Demo
+- **🧵 Thread Handling**: Properly tracks and manages email threads to maintain conversation context
 
 Watch our project walkthrough video for a comprehensive overview:
 [Project Walkthrough on Vimeo](https://vimeo.com/user/project-walkthrough)
 
-## License
+## 📚 References
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
-## Contact
-
-Elango - [@1elango](https://github.com/1elango) - elango@example.com
-
-Project Link: [https://github.com/1elango/Automated-Email-Responder-Agent](https://github.com/1elango/Automated-Email-Responder-Agent)
-
-## Acknowledgements
-
-- [OpenAI](https://openai.com/) for NLP model inspiration
-- [HuggingFace](https://huggingface.co/) for transformer models
-- [React](https://reactjs.org/) for frontend framework
-- All contributors who have helped improve this project
+- [CrewAI](https://github.com/crewAIInc/crewAI/)
+- [IMAP Protocol for Gmail](https://support.google.com/mail/answer/7126229)
+- [Slack API](https://api.slack.com/messaging/webhooks)
+- [Gemini](https://ai.google.com/gemini-api)
+- [OpenAI](https://openai.com/api/)
