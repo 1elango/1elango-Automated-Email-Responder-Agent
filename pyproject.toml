@@ -1,0 +1,24 @@
+[project]
+name = "gmail_crew_ai"
+version = "0.1.0"
+description = "gmail-crew-ai using crewAI"
+authors = [{ name = "Your Name", email = "you@example.com" }]
+requires-python = ">=3.10,<3.13"
+dependencies = [
+    "bs4>=0.0.2",
+    "crewai[tools]>=0.102.0,<1.0.0",
+]
+
+[project.scripts]
+gmail_crew_ai = "gmail_crew_ai.main:run"
+run_crew = "gmail_crew_ai.main:run"
+train = "gmail_crew_ai.main:train"
+replay = "gmail_crew_ai.main:replay"
+test = "gmail_crew_ai.main:test"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.crewai]
+type = "crew"
