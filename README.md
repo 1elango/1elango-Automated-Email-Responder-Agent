@@ -199,7 +199,7 @@ The application will:
 - **🧵 Thread Handling**: Properly tracks and manages email threads to maintain conversation context
 
 Watch our project walkthrough video for a comprehensive overview:
-[Project Walkthrough on Vimeo](https://vimeo.com/1083721124/a169bc6e56?share=copy)
+[Project Walkthrough on Vimeo](https://vimeo.com/1083721124/a169bc6e56?share=copy.
 
 ## 📚 References
 
